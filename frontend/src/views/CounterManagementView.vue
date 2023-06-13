@@ -54,8 +54,14 @@ export default defineComponent({
         this.connection.send(JSON.stringify(data))
       }
     },
-    completeCurrent() {
-      console.log('Complete Current')
+    completeCurrent(counterId: Number) {
+      const data = {
+        action: 'Complete Current',
+        counterId: counterId
+      }
+      if (this.connection != null) {
+        this.connection.send(JSON.stringify(data))
+      }
     },
     callNext(counterId: Number) {
       const data = {

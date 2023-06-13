@@ -73,7 +73,7 @@ wss.on('connection', function connection(ws) {
     }
 
     if (parsedData.action == 'Call Next') {
-      let currentNumber = ticketData.tickets.pop()
+      let currentNumber = ticketData.tickets.shift()
       ticketData.nowServing = currentNumber
       counters[parsedData.counterId - 1].current_number = currentNumber
 
@@ -86,6 +86,20 @@ wss.on('connection', function connection(ws) {
               nowServing: ticketData.nowServing,
               lastNumber: ticketData.lastNumber,
               tickets: ticketData.tickets,
+            })
+          )
+        }
+      })
+    }
+
+    if (parsedData.action == 'Complete Current') {
+      counters[parsedData.counterId - 1].current_number = undefined
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(
+            JSON.stringify({
+              action: 'Update Counters',
+              counters: counters,
             })
           )
         }

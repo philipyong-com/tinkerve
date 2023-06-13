@@ -25,7 +25,7 @@ export default defineComponent({
     <button
       :disabled="online_status == false || current_number == undefined"
       class="border-black border-2 rounded-lg px-3 py-1 text-lg mb-3 top-0 transition-all hover:scale-110 active:bg-black active:text-white disabled:opacity-70 disabled:bg-gray-300 disabled:scale-100 disabled:text-black"
-      @click="$emit('onCompleteCurrent')"
+      @click="$emit('onCompleteCurrent', id)"
     >
       Complete Current
     </button>
