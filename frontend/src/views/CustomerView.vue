@@ -2,10 +2,22 @@
 import CustomerCounter from '@/components/CustomerCounter.vue'
 import { defineComponent } from 'vue'
 
+declare interface Counter {
+  id: number
+  online_status: boolean
+  current_number: string
+}
+
 export default defineComponent({
   components: { CustomerCounter },
-  data() {
+  data(): {
+    connection: WebSocket | null
+    latest_serving_number: string | null
+    last_issued_number: string | null
+    counter_data: Array<Counter>
+  } {
     return {
+      connection: null,
       latest_serving_number: '0001',
       last_issued_number: '0002',
       counter_data: [
@@ -31,6 +43,9 @@ export default defineComponent({
         }
       ]
     }
+  },
+  created: function () {
+    this.connection = new WebSocket('ws://localhost:8080')
   },
   mounted() {
     this.setup()
@@ -60,8 +75,8 @@ export default defineComponent({
       <CustomerCounter
         v-for="counter in counter_data"
         :id="counter.id"
-        :current_number="counter.current_number"
         :online_status="counter.online_status"
+        :current_number="counter.current_number"
       />
     </div>
   </div>
