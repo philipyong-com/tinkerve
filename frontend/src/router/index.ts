@@ -7,6 +7,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/CustomerView.vue')
+    },
+    {
+      path: '/manage',
+      name: 'counter-management',
+      component: () => import('../views/CounterManagementView.vue')
     }
   ]
 })
