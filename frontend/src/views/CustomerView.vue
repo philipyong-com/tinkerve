@@ -12,7 +12,7 @@ export default defineComponent({
         {
           id: 1,
           online_status: true,
-          current_number: '0001'
+          current_number: ''
         },
         {
           id: 2,
@@ -22,12 +22,12 @@ export default defineComponent({
         {
           id: 3,
           online_status: false,
-          current_number: '0003'
+          current_number: ''
         },
         {
           id: 4,
           online_status: false,
-          current_number: '0004'
+          current_number: ''
         }
       ]
     }

@@ -14,7 +14,11 @@ export default defineComponent({
   <div class="flex flex-col items-center border-2 border-black rounded-lg p-4 m-4">
     <div
       class="w-8 h-8 rounded-full self-end transition-all mb-2"
-      :class="{ 'bg-gray-500': !online_status, 'bg-green-500': online_status }"
+      :class="{
+        'bg-gray-500': online_status == false,
+        'bg-green-500': online_status == true && (current_number == null || current_number == ''),
+        'bg-red-500': online_status == true && current_number != null && current_number != ''
+      }"
     ></div>
     <h3 class="text-3xl mb-2">Counter {{ id }}</h3>
     <h3 v-if="current_number != null && current_number != ''" class="text-3xl">
