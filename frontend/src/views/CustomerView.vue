@@ -11,23 +11,23 @@ export default defineComponent({
       counter_data: [
         {
           id: 1,
-          online_status: 'OFFLINE',
-          current_number: '0001'
+          online_status: true,
+          current_number: ''
         },
         {
           id: 2,
-          online_status: 'OFFLINE',
+          online_status: true,
           current_number: '0002'
         },
         {
           id: 3,
-          online_status: 'ONLINE',
-          current_number: '0003'
+          online_status: false,
+          current_number: ''
         },
         {
           id: 4,
-          online_status: 'WORKING',
-          current_number: '0004'
+          online_status: false,
+          current_number: ''
         }
       ]
     }
