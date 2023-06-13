@@ -7,14 +7,14 @@ export default defineComponent({
   components: { CustomerCounter },
   data(): {
     connection: WebSocket | null
-    latest_serving_number: string | null
-    last_issued_number: string | null
+    latest_serving_number: number | undefined
+    last_issued_number: number | undefined
     counter_data: Array<Counter>
   } {
     return {
       connection: null,
-      latest_serving_number: '0001',
-      last_issued_number: '0002',
+      latest_serving_number: undefined,
+      last_issued_number: undefined,
       counter_data: []
     }
   },
@@ -24,6 +24,8 @@ export default defineComponent({
       let parsedMessage = JSON.parse(event.data)
       if (parsedMessage.action == 'SETUP') {
         this.counter_data = parsedMessage.counters
+        this.last_issued_number = parsedMessage.lastNumber
+        this.latest_serving_number = parsedMessage.nowServing
         return
       }
 
@@ -31,10 +33,24 @@ export default defineComponent({
         this.counter_data = parsedMessage.counters
         return
       }
+
+      if (parsedMessage.action == 'Update Ticket Data') {
+        this.last_issued_number = parsedMessage.lastNumber
+        this.latest_serving_number = parsedMessage.nowServing
+        return
+      }
     }
   },
   methods: {
-    takeANumber() {}
+    takeANumber() {
+      if (this.connection != null) {
+        this.connection.send(
+          JSON.stringify({
+            action: 'Take A Number'
+          })
+        )
+      }
+    }
   }
 })
 </script>
