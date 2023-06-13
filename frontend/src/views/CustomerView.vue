@@ -1,12 +1,7 @@
 <script lang="ts">
 import CustomerCounter from '@/components/CustomerCounter.vue'
+import type { Counter } from '@/types/types'
 import { defineComponent } from 'vue'
-
-declare interface Counter {
-  id: number
-  online_status: boolean
-  current_number: string
-}
 
 export default defineComponent({
   components: { CustomerCounter },
