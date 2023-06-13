@@ -1,37 +1,45 @@
 <script lang="ts">
 import AdminCounterVue from '@/components/AdminCounter.vue'
+import type { Counter } from '@/types/types'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: { AdminCounterVue },
-  data() {
+  data(): {
+    connection: WebSocket | null
+    admin_counter_data: Array<Counter>
+  } {
     return {
+      connection: null,
       admin_counter_data: [
         {
           id: 1,
-          online_status: 'OFFLINE',
+          online_status: false,
           current_number: ''
         },
         {
           id: 2,
-          online_status: 'OFFLINE',
-          current_number: '0002'
+          online_status: false,
+          current_number: ''
         },
         {
           id: 3,
-          online_status: 'ONLINE',
+          online_status: true,
           current_number: '0003'
         },
         {
           id: 4,
-          online_status: 'WORKING',
-          current_number: '0004'
+          online_status: false,
+          current_number: ''
         }
       ]
     }
   },
   setup() {},
   mounted() {},
+  created: function () {
+    this.connection = new WebSocket('ws://localhost:8080')
+  },
   methods: {
     switchStatus() {
       console.log('Switch Status')
