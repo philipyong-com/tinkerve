@@ -1,6 +1,7 @@
 <script lang="ts">
 import AdminCounterVue from '@/components/AdminCounter.vue'
 import type { Counter } from '@/types/types'
+import { parse } from '@vue/compiler-dom'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -9,11 +10,13 @@ export default defineComponent({
     connection: WebSocket | null
     admin_counter_data: Array<Counter>
     available_tickets: Boolean
+    tickets: Array<number>
   } {
     return {
       connection: null,
       admin_counter_data: [],
-      available_tickets: false
+      available_tickets: false,
+      tickets: []
     }
   },
   setup() {},
@@ -24,11 +27,19 @@ export default defineComponent({
       let parsedMessage = JSON.parse(event.data)
       if (parsedMessage.action == 'SETUP') {
         this.admin_counter_data = parsedMessage.counters
+        this.available_tickets = parsedMessage.tickets.length > 0
+        this.tickets = parsedMessage.tickets
         return
       }
 
       if (parsedMessage.action == 'Update Counters') {
         this.admin_counter_data = parsedMessage.counters
+        return
+      }
+
+      if (parsedMessage.action == 'Update Ticket Data') {
+        this.available_tickets = parsedMessage.tickets.length > 0
+        this.tickets = parsedMessage.tickets
         return
       }
     }
@@ -46,8 +57,14 @@ export default defineComponent({
     completeCurrent() {
       console.log('Complete Current')
     },
-    callNext() {
-      console.log('Call Next')
+    callNext(counterId: Number) {
+      const data = {
+        action: 'Call Next',
+        counterId: counterId
+      }
+      if (this.connection != null) {
+        this.connection.send(JSON.stringify(data))
+      }
     }
   }
 })
@@ -61,7 +78,7 @@ export default defineComponent({
         :id="counter.id"
         :current_number="counter.current_number"
         :online_status="counter.online_status"
-        :available_tickets="available_tickets.valueOf"
+        :available_tickets="available_tickets.valueOf()"
         @on-switch-status="switchStatus"
         @on-complete-current="completeCurrent"
         @on-call-next="callNext"

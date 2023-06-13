@@ -49,6 +49,7 @@ wss.on('connection', function connection(ws) {
           )
         }
       })
+      return
     }
 
     if (parsedData.action == 'Take A Number') {
@@ -63,6 +64,28 @@ wss.on('connection', function connection(ws) {
               action: 'Update Ticket Data',
               nowServing: ticketData.nowServing,
               lastNumber: ticketData.lastNumber,
+              tickets: ticketData.tickets,
+            })
+          )
+        }
+      })
+      return
+    }
+
+    if (parsedData.action == 'Call Next') {
+      let currentNumber = ticketData.tickets.pop()
+      ticketData.nowServing = currentNumber
+      counters[parsedData.counterId - 1].current_number = currentNumber
+
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(
+            JSON.stringify({
+              action: 'SETUP',
+              counters: counters,
+              nowServing: ticketData.nowServing,
+              lastNumber: ticketData.lastNumber,
+              tickets: ticketData.tickets,
             })
           )
         }
