@@ -17,7 +17,7 @@ export default defineComponent({
     <h3 class="text-3xl text-center mb-3">Counter {{ id }}</h3>
     <button
       class="border-black border-2 rounded-lg px-3 py-1 text-lg mb-3 top-0 transition-all hover:scale-110 active:bg-black active:text-white disabled:opacity-70 disabled:bg-gray-300 disabled:scale-100 disabled:text-black"
-      @click="$emit('onSwitchStatus')"
+      @click="$emit('onSwitchStatus', id)"
       :disabled="current_number != null && current_number != ''"
     >
       {{ online_status == true ? 'Go Offline' : 'Go Online' }}
