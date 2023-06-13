@@ -32,7 +32,7 @@ export default defineComponent({
     <button
       :disabled="online_status == false || current_number != undefined || !available_tickets"
       class="border-black border-2 rounded-lg px-3 py-1 text-lg top-0 transition-all hover:scale-110 active:bg-black active:text-white disabled:opacity-70 disabled:bg-gray-300 disabled:scale-100 disabled:text-black"
-      @click="$emit('onCallNext')"
+      @click="$emit('onCallNext', id)"
     >
       Call Next
     </button>
