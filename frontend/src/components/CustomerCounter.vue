@@ -5,7 +5,7 @@ export default defineComponent({
   props: {
     current_number: String,
     id: { type: Number, required: true },
-    online_status: { type: String, required: true }
+    online_status: { type: Boolean, required: true }
   }
 })
 </script>
@@ -15,9 +15,9 @@ export default defineComponent({
     <div
       class="w-8 h-8 rounded-full self-end transition-all mb-2"
       :class="{
-        'bg-gray-500': online_status == 'OFFLINE',
-        'bg-green-500': online_status == 'ONLINE',
-        'bg-red-500': online_status == 'WORKING'
+        'bg-gray-500': online_status == false,
+        'bg-green-500': online_status == true && (current_number == null || current_number == ''),
+        'bg-red-500': online_status == true && current_number != null && current_number != ''
       }"
     ></div>
     <h3 class="text-3xl mb-2">Counter {{ id }}</h3>
