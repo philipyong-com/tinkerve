@@ -11,38 +11,35 @@ export default defineComponent({
   } {
     return {
       connection: null,
-      admin_counter_data: [
-        {
-          id: 1,
-          online_status: false,
-          current_number: ''
-        },
-        {
-          id: 2,
-          online_status: false,
-          current_number: ''
-        },
-        {
-          id: 3,
-          online_status: true,
-          current_number: '0003'
-        },
-        {
-          id: 4,
-          online_status: false,
-          current_number: ''
-        }
-      ]
+      admin_counter_data: []
     }
   },
   setup() {},
   mounted() {},
   created: function () {
     this.connection = new WebSocket('ws://localhost:8080')
+    this.connection.onmessage = (event) => {
+      let parsedMessage = JSON.parse(event.data)
+      if (parsedMessage.action == 'SETUP') {
+        this.admin_counter_data = parsedMessage.counters
+        return
+      }
+
+      if (parsedMessage.action == 'Update Counters') {
+        this.admin_counter_data = parsedMessage.counters
+        return
+      }
+    }
   },
   methods: {
-    switchStatus() {
-      console.log('Switch Status')
+    switchStatus(counterId: Number) {
+      const data = {
+        action: 'Switch Status',
+        counterId: counterId
+      }
+      if (this.connection != null) {
+        this.connection.send(JSON.stringify(data))
+      }
     },
     completeCurrent() {
       console.log('Complete Current')

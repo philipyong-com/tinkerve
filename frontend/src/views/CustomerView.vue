@@ -15,38 +15,25 @@ export default defineComponent({
       connection: null,
       latest_serving_number: '0001',
       last_issued_number: '0002',
-      counter_data: [
-        {
-          id: 1,
-          online_status: true,
-          current_number: ''
-        },
-        {
-          id: 2,
-          online_status: true,
-          current_number: '0002'
-        },
-        {
-          id: 3,
-          online_status: false,
-          current_number: ''
-        },
-        {
-          id: 4,
-          online_status: false,
-          current_number: ''
-        }
-      ]
+      counter_data: []
     }
   },
   created: function () {
     this.connection = new WebSocket('ws://localhost:8080')
-  },
-  mounted() {
-    this.setup()
+    this.connection.onmessage = (event) => {
+      let parsedMessage = JSON.parse(event.data)
+      if (parsedMessage.action == 'SETUP') {
+        this.counter_data = parsedMessage.counters
+        return
+      }
+
+      if (parsedMessage.action == 'Update Counters') {
+        this.counter_data = parsedMessage.counters
+        return
+      }
+    }
   },
   methods: {
-    setup() {},
     takeANumber() {}
   }
 })
