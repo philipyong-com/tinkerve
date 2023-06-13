@@ -8,10 +8,12 @@ export default defineComponent({
   data(): {
     connection: WebSocket | null
     admin_counter_data: Array<Counter>
+    available_tickets: Boolean
   } {
     return {
       connection: null,
-      admin_counter_data: []
+      admin_counter_data: [],
+      available_tickets: false
     }
   },
   setup() {},
@@ -59,7 +61,7 @@ export default defineComponent({
         :id="counter.id"
         :current_number="counter.current_number"
         :online_status="counter.online_status"
-        :available_tickets="true"
+        :available_tickets="available_tickets.valueOf"
         @on-switch-status="switchStatus"
         @on-complete-current="completeCurrent"
         @on-call-next="callNext"
