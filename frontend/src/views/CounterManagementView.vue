@@ -1,7 +1,6 @@
 <script lang="ts">
 import AdminCounterVue from '@/components/AdminCounter.vue'
 import type { Counter } from '@/types/types'
-import { parse } from '@vue/compiler-dom'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -78,6 +77,7 @@ export default defineComponent({
 
 <template>
   <div class="flex flex-col justify-center items-center">
+    <h1 v-if="!available_tickets" class="text-3xl mt-8">No tickets in the waiting queue</h1>
     <div class="flex mt-4">
       <AdminCounterVue
         v-for="counter in admin_counter_data"

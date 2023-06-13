@@ -33,10 +33,8 @@ const ticketData: TicketData = {
 }
 
 wss.on('connection', function connection(ws) {
-  console.log('Connected!')
   ws.on('message', function message(data: String) {
     let parsedData = JSON.parse(data.toString())
-    // console.log(parsedData)
 
     if (parsedData.action == 'Switch Status') {
       counters[parsedData.counterId - 1].online_status =
@@ -90,6 +88,7 @@ wss.on('connection', function connection(ws) {
           )
         }
       })
+      return
     }
 
     if (parsedData.action == 'Complete Current') {
@@ -104,6 +103,7 @@ wss.on('connection', function connection(ws) {
           )
         }
       })
+      return
     }
   })
   ws.send(
