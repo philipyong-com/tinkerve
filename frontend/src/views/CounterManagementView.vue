@@ -1,7 +1,6 @@
 <script lang="ts">
 import AdminCounterVue from '@/components/AdminCounter.vue'
 import type { Counter } from '@/types/types'
-import { parse } from '@vue/compiler-dom'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
